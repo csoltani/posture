@@ -1,260 +1,562 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-body { 
-    font-family: Georgia, serif; 
-    padding: 20px; 
-    max-width: 750px; 
-    margin: 0 auto; 
-    line-height: 1.7;
-}
-h1 { 
-    font-size: 32px; 
-    margin-bottom: 15px; 
-    line-height: 1.3;
-}
-h2 { 
-    font-size: 24px; 
-    margin-top: 40px; 
-    margin-bottom: 15px; 
-    color: #2c3e50;
-}
-h3 {
-    font-size: 18px;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    color: #34495e;
-}
-p { 
-    margin-bottom: 15px; 
-}
-ul { 
-    margin-left: 30px; 
-    margin-bottom: 15px; 
-}
-li { 
-    margin-bottom: 12px; 
-}
-.tldr-box {
-    background-color: #f8f9fa;
-    border-left: 5px solid #e74c3c;
-    padding: 20px;
-    margin: 30px 0;
-    font-size: 16px;
-}
-.tldr-box h3 {
-    margin-top: 0;
-    color: #e74c3c;
-    font-size: 20px;
-}
-.callout-box {
-    background-color: #fff3cd;
-    border-left: 5px solid #ffc107;
-    padding: 20px;
-    margin: 25px 0;
-    font-size: 16px;
-}
-.callout-box strong {
-    color: #856404;
-}
-.citation {
-    font-style: italic;
-    color: #666;
-    font-size: 14px;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The science is clear: nearly everything you've been told about posture and pain is wrong. 8 studies show tech neck doesn't cause pain, slouching may protect you, and 'good posture' is a myth.">
+    
+    <title>The Posture Myth: Why "Sitting Up Straight" Won't Save Your Back</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #2c3e50;
+            --accent-color: #ffc107;
+            --bg-color: #ffffff;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --header-bg: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --tldr-bg: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            --callout-bg: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            --callout-text: #856404;
+        }
+        
+        [data-theme="dark"] {
+            --primary-color: #ff6b6b;
+            --secondary-color: #e8eaed;
+            --accent-color: #ffd93d;
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --light-bg: #2d2d2d;
+            --border-color: #404040;
+            --header-bg: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
+            --tldr-bg: linear-gradient(135deg, #3a2020 0%, #4a2525 100%);
+            --callout-bg: linear-gradient(135deg, #3a3520 0%, #4a4025 100%);
+            --callout-text: #ffd93d;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 0;
+            margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Progress Bar */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 20px 20px 25px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            line-height: 1.3;
+            font-weight: 700;
+            flex: 1;
+        }
+        
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 20px;
+            width: 60px;
+            height: 32px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+        
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+        
+        .theme-toggle-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        [data-theme="dark"] .theme-toggle-slider {
+            transform: translateX(28px);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Typography */
+        h2 {
+            font-size: 26px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            font-weight: 700;
+            line-height: 1.3;
+            scroll-margin-top: 80px;
+        }
+        
+        h3 {
+            font-size: 20px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-weight: 600;
+            scroll-margin-top: 80px;
+        }
+        
+        p {
+            margin-bottom: 18px;
+            font-size: 17px;
+        }
+        
+        /* TL;DR Box */
+        .tldr-box {
+            background: var(--tldr-bg);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .tldr-box h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .tldr-box ul {
+            margin-left: 20px;
+            margin-bottom: 0;
+        }
+        
+        .tldr-box li {
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        /* Callout Box */
+        .callout-box {
+            background: var(--callout-bg);
+            border-left: 5px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .callout-box strong {
+            color: var(--callout-text);
+        }
+        
+        .callout-box p {
+            font-size: 16px;
+        }
+        
+        /* Lists */
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 15px;
+            font-size: 17px;
+        }
+        
+        /* Bold and Italic */
+        b, strong {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        i, em {
+            font-style: italic;
+        }
+        
+        /* Citation */
+        .citation {
+            font-style: italic;
+            color: #666;
+            font-size: 14px;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid var(--border-color);
+            line-height: 1.6;
+        }
+        
+        [data-theme="dark"] .citation {
+            color: #999;
+        }
+        
+        /* Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, opacity 0.2s;
+            z-index: 999;
+        }
+        
+        #backToTop.show {
+            display: flex;
+        }
+        
+        #backToTop:active {
+            transform: scale(0.9);
+        }
+        
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .theme-toggle {
+                align-self: flex-end;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+            
+            h3 {
+                font-size: 19px;
+            }
+            
+            p, li {
+                font-size: 16px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
+    <!-- Progress Bar -->
+    <div id="progressBar"></div>
+    
+    <!-- Header -->
+    <div class="header">
+        <h1>The Posture Myth: Why "Sitting Up Straight" Won't Save Your Back</h1>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+            <div class="theme-toggle-slider">
+                <span id="themeIcon">☀️</span>
+            </div>
+        </button>
+    </div>
+    
+    <!-- Container -->
+    <div class="container">
 
-<h1>The Posture Myth: Why "Sitting Up Straight" Won't Save Your Back</h1>
+        <div class="tldr-box">
+            <h3>⚡ TL;DR: What You Need to Know</h3>
+            <ul>
+                <li><b>"Tech neck" doesn't cause pain</b> — 8 studies on thousands of people found zero link between phone posture and neck pain</li>
+                <li><b>Slouching may actually protect you</b> — Research shows "slumped" postures reduced neck pain risk vs. sitting up straight</li>
+                <li><b>Your "abnormal" spine is normal</b> — Structural variations appear equally in people with and without pain</li>
+                <li><b>"Good posture" is a myth rooted in military discipline</b> — not biology</li>
+            </ul>
+        </div>
 
-<div class="tldr-box">
-<h3>TL;DR: What You Need to Know</h3>
-<ul style="margin-bottom: 0;">
-<li><b>"Tech neck" doesn't cause pain</b> — 8 studies on thousands of people found zero link between phone posture and neck pain</li>
-<li><b>Slouching may actually protect you</b> — Research shows "slumped" postures reduced neck pain risk vs. sitting up straight</li>
-<li><b>Your "abnormal" spine is normal</b> — Structural variations appear equally in people with and without pain</li>
-<li><b>"Good posture" is a myth rooted in military discipline</b> — not biology</li>
-</ul>
-</div>
+        <h2 id="intro">You've Been Lied To</h2>
 
-<h2>You've Been Lied To</h2>
+        <p>Picture this: You're scrolling through your phone when someone taps your shoulder. "You're going to get tech neck," they warn. "Sit up straight or you'll ruin your spine."</p>
 
-<p>Picture this: You're scrolling through your phone when someone taps your shoulder. "You're going to get tech neck," they warn. "Sit up straight or you'll ruin your spine."</p>
+        <p>You immediately straighten up. You've heard this a thousand times—from parents, teachers, therapists, and those viral infographics showing how your neck supposedly bears 60 pounds of pressure when you look down.</p>
 
-<p>You immediately straighten up. You've heard this a thousand times—from parents, teachers, therapists, and those viral infographics showing how your neck supposedly bears 60 pounds of pressure when you look down.</p>
+        <p>Here's the uncomfortable truth: <b>Nearly everything you've been told about posture and pain is wrong.</b></p>
 
-<p>Here's the uncomfortable truth: <b>Nearly everything you've been told about posture and pain is wrong.</b></p>
+        <p>Not slightly inaccurate. Fundamentally, profoundly wrong. And I can prove it.</p>
 
-<p>Not slightly inaccurate. Fundamentally, profoundly wrong. And I can prove it.</p>
+        <h2 id="tech-neck">The Tech Neck Panic: A Billion-Dollar Hoax</h2>
 
-<h2>The Tech Neck Panic: A Billion-Dollar Hoax</h2>
+        <p>Google "tech neck" right now. You'll find countless products: posture correctors, ergonomic phone stands, $200 pillows, apps that yell at you when you slouch.</p>
 
-<p>Google "tech neck" right now. You'll find countless products: posture correctors, ergonomic phone stands, $200 pillows, apps that yell at you when you slouch.</p>
+        <p>The entire industry rests on one premise: Looking down at your phone creates bad posture, which causes neck pain.</p>
 
-<p>The entire industry rests on one premise: Looking down at your phone creates bad posture, which causes neck pain.</p>
+        <p><b>There's just one problem: It's not true.</b></p>
 
-<p><b>There's just one problem: It's not true.</b></p>
+        <h3>The Evidence Is Overwhelming</h3>
 
-<h3>The Evidence Is Overwhelming</h3>
+        <p>A 2023 scoping review analyzed 41 studies on tech neck. While "tech neck" is frequently defined as a flexed neck position, <b>there is no scientific evidence linking this posture to neck pain.</b> The researchers recommended scientists stop using judgmental adjectives like "incorrect" when describing these postures, as the link to tissue damage remains unproven.</p>
 
-<p>A 2023 scoping review analyzed 41 studies on tech neck. While "tech neck" is frequently defined as a flexed neck position, <b>there is no scientific evidence linking this posture to neck pain.</b> The researchers recommended scientists stop using judgmental adjectives like "incorrect" when describing these postures, as the link to tissue damage remains unproven.</p>
+        <p>Study after study confirms this:</p>
 
-<p>Study after study confirms this:</p>
+        <ul>
+            <li><b>Bertozzi et al. (2021):</b> 238 university students. Result? <b>No significant correlations between hours spent on smartphones or posture during use and neck pain.</b></li>
 
-<ul>
-<li><b>Bertozzi et al. (2021):</b> 238 university students. Result? <b>No significant correlations between hours spent on smartphones or posture during use and neck pain.</b></li>
+            <li><b>Correia et al. (2021):</b> 582 adults measured with precise devices. Finding? <b>Neck flexion angle was not associated with the prevalence, frequency, or intensity of neck pain.</b></li>
 
-<li><b>Correia et al. (2021):</b> 582 adults measured with precise devices. Finding? <b>Neck flexion angle was not associated with the prevalence, frequency, or intensity of neck pain.</b></li>
+            <li><b>Damasceno et al. (2018):</b> 150 young adults. Conclusion? <b>No association between neck posture and neck pain.</b></li>
+        </ul>
 
-<li><b>Damasceno et al. (2018):</b> 150 young adults. Conclusion? <b>No association between neck posture and neck pain.</b></li>
-</ul>
+        <p>This isn't one fluke study. This is a <b>systematic pattern</b> across multiple countries and thousands of participants.</p>
 
-<p>This isn't one fluke study. This is a <b>systematic pattern</b> across multiple countries and thousands of participants.</p>
+        <h3>Even Lab Experiments Failed to Create the Problem</h3>
 
-<h3>Even Lab Experiments Failed to Create the Problem</h3>
+        <p>Kim et al. (2024) had 17 people maintain a 30-degree forward head tilt for 30 minutes straight—far more extreme than typical phone use. While participants reported mild discomfort, objective measures of cervical spine stability did not change significantly.</p>
 
-<p>Kim et al. (2024) had 17 people maintain a 30-degree forward head tilt for 30 minutes straight—far more extreme than typical phone use. While participants reported mild discomfort, objective measures of cervical spine stability did not change significantly.</p>
+        <p>A 2025 scoping review applied Hill's Criteria of Causation—the gold standard for establishing if something causes disease—to 21 articles on tech neck. The relationship satisfied <b>none</b> of the criteria for causality.</p>
 
-<p>A 2025 scoping review applied Hill's Criteria of Causation—the gold standard for establishing if something causes disease—to 21 articles on tech neck. The relationship satisfied <b>none</b> of the criteria for causality.</p>
+        <h2 id="sitting">The Sitting "Epidemic" That Never Was</h2>
 
-<h2>The Sitting "Epidemic" That Never Was</h2>
+        <p>"Sitting is the new smoking!"</p>
 
-<p>"Sitting is the new smoking!"</p>
+        <p>Maybe you bought a standing desk because of it. The narrative is everywhere: Our sedentary lifestyle is destroying our spines.</p>
 
-<p>Maybe you bought a standing desk because of it. The narrative is everywhere: Our sedentary lifestyle is destroying our spines.</p>
+        <p>Except <b>occupational sitting doesn't cause low back pain.</b></p>
 
-<p>Except <b>occupational sitting doesn't cause low back pain.</b></p>
+        <p>A 2010 systematic review examined 24 studies using rigorous Bradford-Hill criteria for causation. Their conclusion? <b>Strong, consistent evidence for no association between occupational sitting and low back pain.</b></p>
 
-<p>A 2010 systematic review examined 24 studies using rigorous Bradford-Hill criteria for causation. Their conclusion? <b>Strong, consistent evidence for no association between occupational sitting and low back pain.</b></p>
+        <p>A 2025 meta-analysis of 129 reports found the same pattern. When researchers followed people over time to see if sitting <i>caused</i> pain, the relationship vanished. Sedentary behavior does not appear to cause spinal pain in young people.</p>
 
-<p>A 2025 meta-analysis of 129 reports found the same pattern. When researchers followed people over time to see if sitting <i>caused</i> pain, the relationship vanished. Sedentary behavior does not appear to cause spinal pain in young people.</p>
+        <p>Does sitting all day affect your circulation and metabolism? Yes. But the claim that your sitting posture is wrecking your spine? <b>Not supported by evidence.</b></p>
 
-<p>Does sitting all day affect your circulation and metabolism? Yes. But the claim that your sitting posture is wrecking your spine? <b>Not supported by evidence.</b></p>
+        <h2 id="slouch">The Slouch That Protects You</h2>
 
-<h2>The Slouch That Protects You</h2>
+        <p>Here's where it gets weird.</p>
 
-<p>Here's where it gets weird.</p>
+        <p>What if "good" posture is actually <i>worse</i> for you than slouching?</p>
 
-<p>What if "good" posture is actually <i>worse</i> for you than slouching?</p>
+        <div class="callout-box">
+            <p><strong>The Study That Flipped Everything:</strong> Researchers tracked 686 participants from age 17 to 22. For females, <b>compared to those who sat in an "upright" posture, those with a "slumped thorax/forward head" position had decreased odds of persistent neck pain</b> (OR = 0.24).</p>
+            <p><b>Translation: Slouching was protective. Sitting up straight increased risk.</b></p>
+        </div>
 
-<div class="callout-box">
-<p><strong>The Study That Flipped Everything:</strong> Researchers tracked 686 participants from age 17 to 22. For females, <b>compared to those who sat in an "upright" posture, those with a "slumped thorax/forward head" position had decreased odds of persistent neck pain</b> (OR = 0.24).</p>
-<p><b>Translation: Slouching was protective. Sitting up straight increased risk.</b></p>
-</div>
+        <p>The researchers were so struck by this that <b>they concluded: "The practice of generic public health messages to sit up straight to prevent neck pain needs rethinking."</b></p>
 
-<p>The researchers were so struck by this that <b>they concluded: "The practice of generic public health messages to sit up straight to prevent neck pain needs rethinking."</b></p>
+        <p>The advice drilled into us since childhood—sit up straight to avoid pain—may actually be making things worse.</p>
 
-<p>The advice drilled into us since childhood—sit up straight to avoid pain—may actually be making things worse.</p>
+        <h2 id="spine">Your "Abnormal" Spine Is Normal</h2>
 
-<h2>Your "Abnormal" Spine Is Normal</h2>
+        <p>"But my doctor said my curved spine is why my back hurts."</p>
 
-<p>"But my doctor said my curved spine is why my back hurts."</p>
+        <p>People show me X-rays with spinal curves, disc degeneration, asymmetries. They've been told these "problems" cause their pain.</p>
 
-<p>People show me X-rays with spinal curves, disc degeneration, asymmetries. They've been told these "problems" cause their pain.</p>
+        <p>Here's what research shows:</p>
 
-<p>Here's what research shows:</p>
+        <div class="callout-box">
+            <p><strong><b>A 2006 study compared 54 people with neck pain to 53 without it, using radiographs to measure spinal curvature. The study found no significant difference in spinal curvature between the groups.</b></strong> Structural abnormalities appeared equally in both groups.</p>
+        </div>
 
-<div class="callout-box">
-<p><strong><b>A 2006 study compared 54 people with neck pain to 53 without it, using radiographs to measure spinal curvature. The study found no significant difference in spinal curvature between the groups.</b></strong> Structural abnormalities appeared equally in both groups.</p>
-</div>
+        <p><b>Your spine can look "bad" on an X-ray and feel perfectly fine. Or look "perfect" and hurt terribly.</b></p>
 
-<p><b>Your spine can look "bad" on an X-ray and feel perfectly fine. Or look "perfect" and hurt terribly.</b></p>
+        <h3>What the Research Actually Shows</h3>
 
-<h3>What the Research Actually Shows</h3>
+        <p>Lederman's comprehensive review examined decades of research on the Postural-Structural-Biomechanical model. The findings:</p>
 
-<p>Lederman's comprehensive review examined decades of research on the Postural-Structural-Biomechanical model. The findings:</p>
+        <ul>
+            <li>No association between spinal asymmetry, kyphosis, and lordosis in teenagers and future low back pain</li>
+            <li>Extent of lordosis and presence of scoliosis don't correlate with back pain</li>
+            <li>Pelvic asymmetry shows no correlation with lower back pain</li>
+            <li>Leg length inequality isn't clinically significant until it reaches 20+ millimeters</li>
+        </ul>
 
-<ul>
-<li>No association between spinal asymmetry, kyphosis, and lordosis in teenagers and future low back pain</li>
-<li>Extent of lordosis and presence of scoliosis don't correlate with back pain</li>
-<li>Pelvic asymmetry shows no correlation with lower back pain</li>
-<li>Leg length inequality isn't clinically significant until it reaches 20+ millimeters</li>
-</ul>
+        <p>Even disc degeneration doesn't predict pain. X-ray and MRI findings have <b>no predictive value</b> for future low back pain or disability.</p>
 
-<p>Even disc degeneration doesn't predict pain. X-ray and MRI findings have <b>no predictive value</b> for future low back pain or disability.</p>
+        <p>The "abnormalities" doctors point to on imaging studies are found <b>just as often in people without pain</b>. They're not abnormalities—they're normal human variation.</p>
 
-<p>The "abnormalities" doctors point to on imaging studies are found <b>just as often in people without pain</b>. They're not abnormalities—they're normal human variation.</p>
+        <div class="callout-box">
+            <p><strong>Genes Matter More Than Posture:</strong> Research shows 47-66% of spinal degeneration is due to hereditary and environmental factors, while only 2-10% can be explained by physical stresses from work or sports.</p>
+        </div>
 
-<div class="callout-box">
-<p><strong>Genes Matter More Than Posture:</strong> Research shows 47-66% of spinal degeneration is due to hereditary and environmental factors, while only 2-10% can be explained by physical stresses from work or sports.</p>
-</div>
+        <h2 id="origins">Where "Good Posture" Really Comes From</h2>
 
-<h2>Where "Good Posture" Really Comes From</h2>
+        <p>If posture doesn't cause pain, why are we obsessed with it?</p>
 
-<p>If posture doesn't cause pain, why are we obsessed with it?</p>
+        <p><b>"Good posture" was invented to enforce military discipline and social class distinctions.</b></p>
 
-<p><b>"Good posture" was invented to enforce military discipline and social class distinctions.</b></p>
+        <p>Historian Sander Gilman traced the origins: The modern Western ideal of the "upright, straight-backed" stance comes from 17th-century military drill manuals. Soldiers needed to stand at attention to load muskets in unison. This rigid position became the standard for "normal" and "healthy" carriage.</p>
 
-<p>Historian Sander Gilman traced the origins: The modern Western ideal of the "upright, straight-backed" stance comes from 17th-century military drill manuals. Soldiers needed to stand at attention to load muskets in unison. This rigid position became the standard for "normal" and "healthy" carriage.</p>
+        <p>By the 18th century, "posture masters" taught the upper classes these "artificial contortions."</p>
 
-<p>By the 18th century, "posture masters" taught the upper classes these "artificial contortions."</p>
+        <p>It gets darker. In the 19th century, upright posture was used to distinguish "advanced" from "primitive" peoples. "Bad" posture was linked to moral failure. Slouching meant weak will or moral decay.</p>
 
-<p>It gets darker. In the 19th century, upright posture was used to distinguish "advanced" from "primitive" peoples. "Bad" posture was linked to moral failure. Slouching meant weak will or moral decay.</p>
+        <p>The reason you were told to sit up straight wasn't based on physiology. It was based on centuries of social control, military conformity, and pseudoscientific racism.</p>
 
-<p>The reason you were told to sit up straight wasn't based on physiology. It was based on centuries of social control, military conformity, and pseudoscientific racism.</p>
+        <p>You don't have "bad posture." You have a <b>normal human body</b> judged by an arbitrary standard rooted in authoritarian discipline.</p>
 
-<p>You don't have "bad posture." You have a <b>normal human body</b> judged by an arbitrary standard rooted in authoritarian discipline.</p>
+        <h2 id="products">The Products That Profit From Your Fear</h2>
 
-<h2>The Products That Profit From Your Fear</h2>
+        <p>A 2019 scoping review examined posture-correcting shirts—compression garments promising to straighten your spine.</p>
 
-<p>A 2019 scoping review examined posture-correcting shirts—compression garments promising to straighten your spine.</p>
+        <p>The findings? Low-quality evidence, conflicting results, and no studies on clinical populations.</p>
 
-<p>The findings? Low-quality evidence, conflicting results, and no studies on clinical populations.</p>
+        <p>The researchers' warning: Promotion of this product may reinforce the inaccurate and unhelpful message that poor posture leads to pain.</p>
 
-<p>The researchers' warning: Promotion of this product may reinforce the inaccurate and unhelpful message that poor posture leads to pain.</p>
+        <p>Their conclusion: <b>No good quality evidence supports posture-correcting shirts as pain management.</b></p>
 
-<p>Their conclusion: <b>No good quality evidence supports posture-correcting shirts as pain management.</b></p>
+        <p>Yet these products sell for $50-$200 each, generating millions by exploiting your fear.</p>
 
-<p>Yet these products sell for $50-$200 each, generating millions by exploiting your fear.</p>
+        <h2 id="practical">The Practical Truth</h2>
 
-<h2>The Practical Truth</h2>
+        <p>So what should you do?</p>
 
-<p>So what should you do?</p>
+        <p><b>Stop trying to maintain "perfect" posture.</b> Your body was designed to move, not hold one position for hours.</p>
 
-<p><b>Stop trying to maintain "perfect" posture.</b> Your body was designed to move, not hold one position for hours.</p>
+        <p><b>Change positions frequently.</b> Sit, stand, slouch, stretch—variety matters. The best posture is the next posture.</p>
 
-<p><b>Change positions frequently.</b> Sit, stand, slouch, stretch—variety matters. The best posture is the next posture.</p>
+        <p><b>Strengthen your body, but not to "fix" it.</b> Exercise because it feels good and improves health. Not because your posture needs correcting.</p>
 
-<p><b>Strengthen your body, but not to "fix" it.</b> Exercise because it feels good and improves health. Not because your posture needs correcting.</p>
+        <p><b>Ignore the fear-mongering.</b> Your spine is robust, not fragile. Biological systems have reserve capacity to accommodate imperfections without symptoms.</p>
 
-<p><b>Ignore the fear-mongering.</b> Your spine is robust, not fragile. Biological systems have reserve capacity to accommodate imperfections without symptoms.</p>
+        <p><b>Question anyone selling posture correction.</b> If someone says your pain is from "bad posture" and conveniently sells the solution, you're being sold a myth.</p>
 
-<p><b>Question anyone selling posture correction.</b> If someone says your pain is from "bad posture" and conveniently sells the solution, you're being sold a myth.</p>
+        <p><b>Save your money.</b> Those ergonomic chairs, standing desks, posture correctors, and $200 pillows might be comfortable, but they won't cure pain by "fixing" alignment.</p>
 
-<p><b>Save your money.</b> Those ergonomic chairs, standing desks, posture correctors, and $200 pillows might be comfortable, but they won't cure pain by "fixing" alignment.</p>
+        <h2>The Bottom Line</h2>
 
-<h2>The Bottom Line</h2>
+        <p>The evidence is overwhelming:</p>
 
-<p>The evidence is overwhelming:</p>
+        <ul>
+            <li><b>8 studies</b> show no link between tech neck and pain</li>
+            <li><b>3 systematic reviews</b> find no association between sitting and back pain</li>
+            <li><b>Multiple high-quality studies</b> show structural variations don't predict pain</li>
+            <li><b>Prospective research</b> demonstrates "slouching" can be protective</li>
+            <li><b>Historical analysis</b> reveals postural ideals are social constructs, not biological necessities</li>
+        </ul>
 
-<ul>
-<li><b>8 studies</b> show no link between tech neck and pain</li>
-<li><b>3 systematic reviews</b> find no association between sitting and back pain</li>
-<li><b>Multiple high-quality studies</b> show structural variations don't predict pain</li>
-<li><b>Prospective research</b> demonstrates "slouching" can be protective</li>
-<li><b>Historical analysis</b> reveals postural ideals are social constructs, not biological necessities</li>
-</ul>
+        <p>This is the <b>scientific consensus</b> that never made it into popular consciousness because it doesn't sell products or justify expensive treatments.</p>
 
-<p>This is the <b>scientific consensus</b> that never made it into popular consciousness because it doesn't sell products or justify expensive treatments.</p>
+        <p>Your posture is not broken. Your spine is not fragile. That curve in your back, that forward head position, the way you naturally sit when no one's watching—it's probably fine.</p>
 
-<p>Your posture is not broken. Your spine is not fragile. That curve in your back, that forward head position, the way you naturally sit when no one's watching—it's probably fine.</p>
+        <p>The real problem? You've been told your normal body is abnormal. That you need fixing. That standing up straight will save you.</p>
 
-<p>The real problem? You've been told your normal body is abnormal. That you need fixing. That standing up straight will save you.</p>
+        <p><b>It won't.</b></p>
 
-<p><b>It won't.</b></p>
+        <p>What will help? Moving regularly. Building strength and resilience. Managing stress. Sleeping well. Not catastrophizing about normal aches. And maybe—just maybe—letting yourself slouch without guilt.</p>
 
-<p>What will help? Moving regularly. Building strength and resilience. Managing stress. Sleeping well. Not catastrophizing about normal aches. And maybe—just maybe—letting yourself slouch without guilt.</p>
+        <p>Because the science is clear: Your grandmother was wrong. Your posture is not your problem.</p>
 
-<p>Because the science is clear: Your grandmother was wrong. Your posture is not your problem.</p>
+        <p><b>Now sit however the hell you want.</b></p>
 
-<p><b>Now sit however the hell you want.</b></p>
-
-<p class="citation">The evidence cited in this essay comes from systematic reviews, meta-analyses, and high-quality prospective studies published in peer-reviewed journals including The Spine Journal, European Spine Journal, Physical Therapy, and the British Journal of Sports Medicine. The full annotated bibliography contains 23 primary sources spanning multiple countries and decades of research.</p>
-
+        <p class="citation">The evidence cited in this essay comes from systematic reviews, meta-analyses, and high-quality prospective studies published in peer-reviewed journals including The Spine Journal, European Spine Journal, Physical Therapy, and the British Journal of Sports Medicine. The full annotated bibliography contains 23 primary sources spanning multiple countries and decades of research.</p>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="scrollToTop()">↑</button>
+    
+    <script>
+        // Dark Mode Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icon
+            document.getElementById('themeIcon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        }
+        
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeIcon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+        });
+        
+        // Progress Bar
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+            
+            // Show/hide back to top button
+            const backToTop = document.getElementById('backToTop');
+            if (winScroll > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Back to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
